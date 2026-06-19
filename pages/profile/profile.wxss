@@ -1,0 +1,68 @@
+.block {
+  padding: 20rpx;
+  margin-bottom: 16rpx;
+}
+
+.profile-head {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.avatar {
+  width: 110rpx;
+  height: 110rpx;
+  border-radius: 55rpx;
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.muted {
+  color: #6b7280;
+  font-size: 24rpx;
+}
+
+input {
+  background: #f3f4f6;
+  border-radius: 10rpx;
+  height: 72rpx;
+  line-height: 72rpx;
+  padding: 0 16rpx;
+}
+
+.save-btn {
+  margin-top: 8rpx;
+  background: #2563eb;
+  color: #fff;
+  border-radius: 10rpx;
+}
+
+.shortcuts .actions {
+  display: flex;
+  gap: 12rpx;
+}
+
+.shortcuts button {
+  flex: 1;
+  background: #e5e7eb;
+  color: #111827;
+  border-radius: 10rpx;
+}
+
+.address-item {
+  padding: 12rpx 0;
+  border-bottom: 1rpx solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.setting-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

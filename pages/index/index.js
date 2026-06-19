@@ -1,146 +1,78 @@
-// pages/index/index.js
+const { categories, mockProducts } = require('../../data/products')
+const { fetchProducts } = require('../../utils/products-api')
+const { addToCart, getCartCount } = require('../../utils/cart')
+
 Page({
   data: {
-    todos: [],
-    inputValue: '',
-    completedCount: 0
+    products: [],
+    filteredProducts: [],
+    categories,
+    activeCategory: 'All',
+    keyword: '',
+    loading: true,
+    cartCount: 0
   },
 
   onLoad() {
-    console.log('Index page loaded');
-    this.loadTodos();
-  },
-
-  // Load todos from storage
-  loadTodos() {
-    try {
-      const todos = wx.getStorageSync('todos');
-      if (todos) {
-        const completedCount = todos.filter(todo => todo.completed).length;
-        this.setData({
-          todos: todos,
-          completedCount: completedCount
-        });
-      }
-    } catch (error) {
-      console.error('Failed to load todos:', error);
-    }
-  },
-
-  // Handle input change
-  onInputChange(event) {
-    this.setData({
-      inputValue: event.detail.value
-    });
-  },
-
-  // Add new todo
-  onAddTodo() {
-    const inputValue = this.data.inputValue.trim();
-    
-    if (!inputValue) {
-      wx.showToast({
-        title: 'Please enter a todo',
-        icon: 'none',
-        duration: 2000
-      });
-      return;
-    }
-
-    const newTodo = {
-      id: Date.now(),
-      text: inputValue,
-      completed: false,
-      createdAt: new Date().toLocaleString()
-    };
-
-    const todos = [newTodo, ...this.data.todos];
-    this.saveTodos(todos);
-    
-    this.setData({
-      inputValue: '',
-      todos: todos
-    });
-
-    wx.showToast({
-      title: 'Todo added!',
-      icon: 'success',
-      duration: 1500
-    });
-  },
-
-  // Toggle todo completion status
-  onToggleTodo(event) {
-    const id = event.currentTarget.dataset.id;
-    const todos = this.data.todos.map(todo => {
-      if (todo.id === id) {
-        return {
-          ...todo,
-          completed: !todo.completed
-        };
-      }
-      return todo;
-    });
-
-    const completedCount = todos.filter(todo => todo.completed).length;
-    this.saveTodos(todos);
-    
-    this.setData({
-      todos: todos,
-      completedCount: completedCount
-    });
-  },
-
-  // Delete todo
-  onDeleteTodo(event) {
-    const id = event.currentTarget.dataset.id;
-    wx.showModal({
-      title: 'Delete Todo',
-      content: 'Are you sure you want to delete this todo?',
-      success: (res) => {
-        if (res.confirm) {
-          const todos = this.data.todos.filter(todo => todo.id !== id);
-          const completedCount = todos.filter(todo => todo.completed).length;
-          this.saveTodos(todos);
-          
-          this.setData({
-            todos: todos,
-            completedCount: completedCount
-          });
-
-          wx.showToast({
-            title: 'Todo deleted!',
-            icon: 'success',
-            duration: 1500
-          });
-        }
-      }
-    });
-  },
-
-  // Save todos to storage
-  saveTodos(todos) {
-    try {
-      wx.setStorageSync('todos', todos);
-    } catch (error) {
-      console.error('Failed to save todos:', error);
-      wx.showToast({
-        title: 'Failed to save',
-        icon: 'none',
-        duration: 2000
-      });
-    }
+    this.loadProducts()
   },
 
   onShow() {
-    console.log('Index page shown');
+    this.setData({ cartCount: getCartCount() })
   },
 
-  onHide() {
-    console.log('Index page hidden');
+  loadProducts() {
+    fetchProducts((products) => {
+      const safeProducts = products && products.length ? products : mockProducts
+      this.setData({
+        products: safeProducts,
+        categories: ['All', ...new Set(safeProducts.map((item) => item.category))],
+        loading: false
+      })
+      this.applyFilter()
+    })
   },
 
-  onUnload() {
-    console.log('Index page unloaded');
+  onSearchInput(e) {
+    this.setData({ keyword: (e.detail.value || '').trim() })
+    this.applyFilter()
+  },
+
+  onCategoryTap(e) {
+    this.setData({ activeCategory: e.currentTarget.dataset.category })
+    this.applyFilter()
+  },
+
+  applyFilter() {
+    const { products, keyword, activeCategory } = this.data
+    const normalizedKeyword = keyword.toLowerCase()
+
+    const filteredProducts = products.filter((item) => {
+      const byCategory = activeCategory === 'All' || item.category === activeCategory
+      const bySearch = !normalizedKeyword || item.name.toLowerCase().includes(normalizedKeyword)
+      return byCategory && bySearch
+    })
+
+    this.setData({ filteredProducts })
+  },
+
+  openProduct(e) {
+    wx.navigateTo({
+      url: `/pages/product-detail/product-detail?id=${e.currentTarget.dataset.id}`
+    })
+  },
+
+  addItemToCart(e) {
+    const product = this.data.products.find((item) => item.id === e.currentTarget.dataset.id)
+    if (!product) {
+      return
+    }
+    addToCart(product, 1)
+    this.setData({ cartCount: getCartCount() })
+    wx.showToast({ title: 'Added to cart', icon: 'success' })
+  },
+
+  goToCart() {
+    wx.switchTab({ url: '/pages/cart/cart' })
   }
 })

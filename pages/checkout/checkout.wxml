@@ -1,0 +1,28 @@
+<view class="container">
+  <view class="card block">
+    <text class="section-title">Shipping Address</text>
+    <input placeholder="Full Name" value="{{address.name}}" data-field="name" bindinput="onInput" />
+    <input placeholder="Phone" type="number" value="{{address.phone}}" data-field="phone" bindinput="onInput" />
+    <input placeholder="Province/State" value="{{address.province}}" data-field="province" bindinput="onInput" />
+    <input placeholder="City" value="{{address.city}}" data-field="city" bindinput="onInput" />
+    <input placeholder="Street Address" value="{{address.detail}}" data-field="detail" bindinput="onInput" />
+  </view>
+
+  <view class="card block">
+    <text class="section-title">Payment Method</text>
+    <picker mode="selector" range="{{paymentMethods}}" value="{{paymentIndex}}" bindchange="onPaymentChange">
+      <view class="picker">{{paymentMethods[paymentIndex]}}</view>
+    </picker>
+  </view>
+
+  <view class="card block">
+    <text class="section-title">Order Summary</text>
+    <view class="row"><text>Items</text><text>{{items.length}}</text></view>
+    <view class="row"><text>Subtotal</text><text>¥{{summary.subtotal}}</text></view>
+    <view class="row"><text>Tax</text><text>¥{{summary.tax}}</text></view>
+    <view class="row"><text>Shipping</text><text>¥{{summary.shipping}}</text></view>
+    <view class="row total"><text>Total</text><text>¥{{summary.total}}</text></view>
+  </view>
+
+  <button class="place-btn" loading="{{submitting}}" bindtap="placeOrder">Place Order</button>
+</view>

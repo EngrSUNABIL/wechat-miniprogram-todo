@@ -1,0 +1,37 @@
+<view class="container" wx:if="{{product}}">
+  <swiper class="gallery" indicator-dots="true" autoplay="false">
+    <swiper-item wx:for="{{product.images}}" wx:key="*this">
+      <image class="gallery-img" src="{{item}}" mode="aspectFill" />
+    </swiper-item>
+  </swiper>
+
+  <view class="detail card">
+    <text class="name">{{product.name}}</text>
+    <text class="rating">★ {{product.rating}}</text>
+    <text class="price">¥{{product.price}}</text>
+    <text class="description">{{product.description}}</text>
+  </view>
+
+  <view class="qty card">
+    <text>Quantity</text>
+    <view class="stepper">
+      <button class="step" bindtap="decreaseQty">-</button>
+      <text class="qty-num">{{quantity}}</text>
+      <button class="step" bindtap="increaseQty">+</button>
+    </view>
+  </view>
+
+  <view class="reviews card">
+    <text class="section-title">Reviews</text>
+    <view wx:if="{{product.reviews.length === 0}}" class="review-item">No reviews yet.</view>
+    <view wx:for="{{product.reviews}}" wx:key="id" class="review-item">
+      <text>{{item.user}} · ★ {{item.rating}}</text>
+      <text>{{item.comment}}</text>
+    </view>
+  </view>
+
+  <view class="bottom-bar">
+    <button class="mini" bindtap="goToCart">Cart ({{cartCount}})</button>
+    <button class="primary" bindtap="addCurrentToCart">Add to Cart</button>
+  </view>
+</view>

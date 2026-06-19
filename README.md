@@ -1,123 +1,100 @@
-# WeChat Mini Program - Todo App
+# ShopEasy WeChat Mini Program
 
-A simple and elegant Todo application built with WeChat Mini Program.
+ShopEasy is a full-featured e-commerce WeChat mini program with product browsing, shopping cart, checkout, order tracking, and user profile management.
 
 ## Features
 
-✅ Add new todos
-✅ Mark todos as completed
-✅ Delete todos
-✅ Persistent storage using WeChat local storage
-✅ View completion statistics
-✅ Clean and user-friendly UI
+- Home page with product grid, search, and category filters
+- Product detail page with image gallery, rating, reviews, and quantity selector
+- Shopping cart with quantity controls, item removal, subtotal/tax/shipping calculation
+- Checkout flow with shipping address, payment method, and order summary
+- Orders page with history, detail expansion, status tracking, and cancellation
+- User profile with settings, saved addresses, and quick access shortcuts
+- Local persistence for cart, orders, addresses, and profile settings
+- `wx.request` integration with fallback to local mock data
 
 ## Project Structure
 
 ```
 wechat-miniprogram-todo/
-├── app.json              # Global configuration
-├── app.js                # App lifecycle
-├── app.wxss              # Global styles
-├── pages/
-│   ├── index/            # Main Todo page
-│   │   ├── index.wxml
-│   │   ├── index.js
-│   │   ├── index.wxss
-│   │   └── index.json
-│   └── logs/             # Logs page (optional)
-│       ├── logs.wxml
-│       ├── logs.js
-│       ├── logs.wxss
-│       └── logs.json
-├── sitemap.json          # Sitemap for indexing
-└── README.md
+├── app.js
+├── app.json
+├── app.wxss
+├── data/
+│   └── products.js
+├── utils/
+│   ├── cart.js
+│   ├── orders.js
+│   └── products-api.js
+└── pages/
+    ├── index/            # Home/Product listing
+    ├── product-detail/   # Product details
+    ├── cart/             # Shopping cart
+    ├── checkout/         # Checkout
+    ├── orders/           # Order history
+    └── profile/          # User profile
 ```
 
 ## Getting Started
 
-### Prerequisites
-- WeChat Developer Tools (Download from [here](https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html))
-- WeChat account with developer registration
+1. Open this project in WeChat Developer Tools.
+2. Use a test AppID (for development) or your official AppID.
+3. Compile and run in simulator.
+4. Browse products, add items to cart, checkout, and view orders.
 
-### Installation
+## Data Model Highlights
 
-1. Clone this repository:
-   ```bash
-   git clone https://github.com/EngrSUNABIL/wechat-miniprogram-todo.git
-   ```
+### Product
 
-2. Open WeChat Developer Tools
-
-3. Click "Import Project"
-
-4. Select the project folder
-
-5. Enter your App ID (use a test ID if you don't have one yet)
-
-6. Click "Open"
-
-7. Click the "Compile" button to preview
-
-## Usage
-
-1. **Add a Todo**: Type in the input field and click "Add" or press Enter
-2. **Mark as Complete**: Tap on the todo item to toggle completion status
-3. **Delete**: Click the "Delete" button next to the todo
-4. **View Stats**: See total and completed todos at the bottom
-
-## Data Storage
-
-Todos are stored in WeChat's local storage (`wx.setStorageSync` / `wx.getStorageSync`), so they persist between app sessions.
-
-## Todo Data Structure
-
-```javascript
+```js
 {
-  id: number,           // Unique timestamp-based ID
-  text: string,         // Todo text
-  completed: boolean,   // Completion status
-  createdAt: string     // Creation timestamp
+  id: Number,
+  name: String,
+  price: Number,
+  rating: Number,
+  category: String,
+  description: String,
+  images: String[],
+  reviews: { id, user, rating, comment }[]
 }
 ```
 
-## Deployment
+### Cart Item
 
-1. Register your WeChat mini program on the [Official Platform](https://mp.weixin.qq.com/)
-2. Get your App ID
-3. Update the App ID in WeChat Developer Tools
-4. Click "Upload" to submit for review
-5. Once approved, your mini program will be available to users
+```js
+{
+  id: Number,
+  name: String,
+  price: Number,
+  image: String,
+  rating: Number,
+  quantity: Number
+}
+```
 
-## Future Enhancements
+### Order
 
-- [ ] Add categories/tags
-- [ ] Set reminders/notifications
-- [ ] Dark mode support
-- [ ] Cloud storage backup
-- [ ] Sharing todos with other users
-- [ ] Due date functionality
-- [ ] Priority levels
+```js
+{
+  id: String,
+  status: 'Pending' | 'Cancelled',
+  createdAt: String,
+  items: CartItem[],
+  summary: { subtotal, tax, shipping, total },
+  shippingAddress: { name, phone, province, city, detail },
+  paymentMethod: String
+}
+```
 
-## API Reference
+## Storage Keys
 
-### WeChat APIs Used
+- `ecom_cart_items`
+- `ecom_orders`
+- `ecom_addresses`
+- `profile_name`
+- `profile_notifications`
 
-- `wx.setStorageSync()` - Save data locally
-- `wx.getStorageSync()` - Retrieve stored data
-- `wx.showToast()` - Display notifications
-- `wx.showModal()` - Show confirmation dialogs
-- `wx.navigateBack()` - Navigate to previous page
+## Notes
 
-## License
-
-MIT License - Feel free to use this project for your own purposes!
-
-## Support
-
-For questions or issues, please open an issue on GitHub.
-
-## Resources
-
-- [WeChat Mini Program Official Docs](https://developers.weixin.qq.com/miniprogram/en/docs/)
-- [WeChat API Reference](https://developers.weixin.qq.com/miniprogram/en/docs/reference/)
-- [Design Guidelines](https://developers.weixin.qq.com/miniprogram/en/design/)
+- No backend is required for initial usage.
+- Remote product request uses `wx.request`; local mock data is used as fallback.
