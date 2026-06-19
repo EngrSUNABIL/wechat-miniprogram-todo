@@ -1,0 +1,40 @@
+<view class="container">
+  <view class="card block profile-head">
+    <image class="avatar" src="https://picsum.photos/id/1005/200/200" mode="aspectFill" />
+    <view class="meta">
+      <text class="section-title">{{name}}</text>
+      <text class="muted">Welcome back to ShopEasy</text>
+    </view>
+  </view>
+
+  <view class="card block">
+    <text class="section-title">User Information</text>
+    <input value="{{name}}" placeholder="Your name" bindinput="onNameInput" />
+    <button class="save-btn" bindtap="saveProfile">Save</button>
+  </view>
+
+  <view class="card block shortcuts">
+    <text class="section-title">Quick Access</text>
+    <view class="actions">
+      <button bindtap="goOrders">Order History</button>
+      <button bindtap="goCart">My Cart</button>
+    </view>
+  </view>
+
+  <view class="card block">
+    <text class="section-title">Saved Addresses</text>
+    <view wx:if="{{addresses.length === 0}}" class="muted">No saved address yet.</view>
+    <view wx:for="{{addresses}}" wx:key="index" class="address-item">
+      <text>{{item.name}} {{item.phone}}</text>
+      <text>{{item.province}} {{item.city}} {{item.detail}}</text>
+    </view>
+  </view>
+
+  <view class="card block">
+    <text class="section-title">Settings</text>
+    <view class="setting-row">
+      <text>Order notifications</text>
+      <switch checked="{{notifications}}" bindchange="onNotificationChange" />
+    </view>
+  </view>
+</view>

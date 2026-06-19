@@ -1,0 +1,82 @@
+.gallery {
+  height: 540rpx;
+  border-radius: 18rpx;
+  overflow: hidden;
+}
+
+.gallery-img {
+  width: 100%;
+  height: 100%;
+}
+
+.detail,
+.qty,
+.reviews {
+  margin-top: 20rpx;
+  padding: 20rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.name {
+  font-size: 34rpx;
+  font-weight: 700;
+}
+
+.rating {
+  color: #f59e0b;
+}
+
+.description {
+  color: #4b5563;
+  line-height: 1.6;
+}
+
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.step {
+  width: 64rpx;
+  height: 64rpx;
+  line-height: 64rpx;
+  border-radius: 10rpx;
+  background: #e5e7eb;
+}
+
+.qty-num {
+  min-width: 48rpx;
+  text-align: center;
+}
+
+.review-item {
+  padding: 14rpx 0;
+  border-bottom: 1rpx solid #eef2f7;
+  display: flex;
+  flex-direction: column;
+  gap: 6rpx;
+}
+
+.bottom-bar {
+  margin-top: 26rpx;
+  display: flex;
+  gap: 16rpx;
+}
+
+.bottom-bar button {
+  flex: 1;
+  border-radius: 12rpx;
+}
+
+.mini {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+.primary {
+  background: #2563eb;
+  color: #fff;
+}

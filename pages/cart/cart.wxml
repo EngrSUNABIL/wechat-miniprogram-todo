@@ -1,0 +1,34 @@
+<view class="container">
+  <view wx:if="{{items.length === 0}}" class="empty card">
+    <text>Your cart is empty</text>
+    <button class="primary" bindtap="browseProducts">Browse products</button>
+  </view>
+
+  <view wx:else>
+    <view class="cart-item card" wx:for="{{items}}" wx:key="id">
+      <image class="thumb" src="{{item.image}}" mode="aspectFill" />
+      <view class="meta">
+        <text class="name">{{item.name}}</text>
+        <text class="price">¥{{item.price}}</text>
+        <view class="actions">
+          <button class="qty-btn" bindtap="decreaseQty" data-id="{{item.id}}" data-quantity="{{item.quantity}}">-</button>
+          <text>{{item.quantity}}</text>
+          <button class="qty-btn" bindtap="increaseQty" data-id="{{item.id}}" data-quantity="{{item.quantity}}">+</button>
+          <button class="remove" bindtap="removeItem" data-id="{{item.id}}">Remove</button>
+        </view>
+      </view>
+    </view>
+
+    <view class="summary card">
+      <view class="row"><text>Subtotal</text><text>¥{{summary.subtotal}}</text></view>
+      <view class="row"><text>Tax</text><text>¥{{summary.tax}}</text></view>
+      <view class="row"><text>Shipping</text><text>¥{{summary.shipping}}</text></view>
+      <view class="row total"><text>Total</text><text>¥{{summary.total}}</text></view>
+    </view>
+
+    <view class="bottom-actions">
+      <button class="secondary" bindtap="clearAll">Clear Cart</button>
+      <button class="primary" bindtap="goCheckout">Proceed to Checkout</button>
+    </view>
+  </view>
+</view>

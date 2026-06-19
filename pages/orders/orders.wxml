@@ -1,0 +1,36 @@
+<view class="container">
+  <view wx:if="{{orders.length === 0}}" class="empty card">
+    <text>No orders yet.</text>
+    <text>Add products to cart and checkout to see orders.</text>
+  </view>
+
+  <view wx:for="{{orders}}" wx:key="id" wx:for-item="order" class="order card">
+    <view class="top" bindtap="toggleOrder" data-id="{{order.id}}">
+      <view>
+        <text class="order-id">{{order.id}}</text>
+        <text class="order-time">{{order.createdAt}}</text>
+      </view>
+      <view class="status {{order.status === 'Cancelled' ? 'cancelled' : ''}}">{{order.status}}</view>
+    </view>
+
+    <view class="row"><text>Total</text><text>¥{{order.summary.total}}</text></view>
+
+    <view wx:if="{{expandedOrderId === order.id}}" class="details">
+      <view wx:for="{{order.items}}" wx:key="id" wx:for-item="line" class="row">
+        <text>{{line.name}} x {{line.quantity}}</text>
+        <text>¥{{line.price}}</text>
+      </view>
+      <view class="row"><text>Payment</text><text>{{order.paymentMethod}}</text></view>
+      <view class="row"><text>Address</text><text>{{order.shippingAddress.province}} {{order.shippingAddress.city}} {{order.shippingAddress.detail}}</text></view>
+    </view>
+
+    <button
+      wx:if="{{order.status !== 'Cancelled'}}"
+      class="cancel-btn"
+      bindtap="cancelCurrentOrder"
+      data-id="{{order.id}}"
+    >
+      Cancel Order
+    </button>
+  </view>
+</view>
