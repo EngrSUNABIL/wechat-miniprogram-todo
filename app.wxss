@@ -9,7 +9,7 @@
   box-sizing: border-box;
 }
 
-* {
+view, text, button, input, checkbox, scroll-view {
   margin: 0;
   padding: 0;
 }
