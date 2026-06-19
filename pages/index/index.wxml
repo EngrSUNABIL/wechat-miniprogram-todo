@@ -1,0 +1,41 @@
+<!--pages/index/index.wxml-->
+<view class="container">
+  <!-- Header -->
+  <view class="header">
+    <text class="title">My Todo List</text>
+  </view>
+
+  <!-- Input Section -->
+  <view class="input-section">
+    <input 
+      class="input-field" 
+      type="text" 
+      placeholder="Add a new todo..."
+      bindinput="onInputChange"
+      bindconfirm="onAddTodo"
+      value="{{ inputValue }}"
+    />
+    <button class="add-btn" bindtap="onAddTodo">Add</button>
+  </view>
+
+  <!-- Empty State -->
+  <view class="empty-state" wx:if="{{ todos.length === 0 }}">
+    <text class="empty-text">No todos yet. Add one to get started!</text>
+  </view>
+
+  <!-- Todo List -->
+  <scroll-view class="todo-list" scroll-y="true" wx:if="{{ todos.length > 0 }}">
+    <view class="todo-item" wx:for="{{ todos }}" wx:key="id">
+      <view class="todo-content" bindtap="onToggleTodo" data-id="{{ item.id }}">
+        <checkbox class="todo-checkbox" checked="{{ item.completed }}"></checkbox>
+        <text class="todo-text" style="{{ item.completed ? 'text-decoration: line-through; color: #999;' : '' }}">{{ item.text }}</text>
+      </view>
+      <button class="delete-btn" bindtap="onDeleteTodo" data-id="{{ item.id }}">Delete</button>
+    </view>
+  </scroll-view>
+
+  <!-- Stats -->
+  <view class="stats" wx:if="{{ todos.length > 0 }}">
+    <text class="stats-text">Total: {{ todos.length }} | Completed: {{ completedCount }}</text>
+  </view>
+</view>

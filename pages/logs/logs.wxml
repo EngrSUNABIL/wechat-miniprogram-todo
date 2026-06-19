@@ -1,0 +1,5 @@
+<!--pages/logs/logs.wxml-->
+<view class="container">
+  <text>Logs Page</text>
+  <button bindtap="goBack">Go Back</button>
+</view>
